@@ -42,12 +42,12 @@ async function run() {
 
 		app.get("/allToys", async (req, res) => {
 
-			const result = await toysCollection.find({}).toArray();
+			const result = await toysCollection.find({}).limit(20).toArray();
 			res.send(result);
 
 		})
 
-		
+
 
 		app.put("/updateToy/:id", async (req, res) => {
 			const id = req.params.id;
@@ -66,7 +66,7 @@ async function run() {
 			console.log(result)
 		});
 
-		app.delete('/allToys/:id', async(req, res) => {
+		app.delete('/allToys/:id', async (req, res) => {
 			const id = req.params.id;
 			const query = { _id: new ObjectId(id) }
 			const result = await toysCollection.deleteOne(query);
