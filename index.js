@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion} = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 const cors = require('cors');
 const app = express();
@@ -27,6 +27,7 @@ async function run() {
 		const db = client.db("disneyDolls");
 		const toysCollection = db.collection('Toys');
 
+
 		app.post("/addAToy", async (req, res) => {
 			const body = req.body;
 
@@ -39,11 +40,20 @@ async function run() {
 			res.send(result);
 		})
 
+		app.get("/allToys", async (req, res) => {
+
+			const result = await toysCollection.find({}).toArray();
+			res.send(result);
+
+		})
+
+
+
 		// Send a ping to confirm a successful connection
 		await client.db("admin").command({ ping: 1 });
 		console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-		
+
 
 	} finally {
 		// Ensures that the client will close when you finish/error
