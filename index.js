@@ -7,6 +7,13 @@ const port = process.env.PORT || 4000;
 
 // middleware
 app.use(cors());
+
+app.use(function (req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header('Access-Control-Allow-Methods', 'DELETE, PUT, GET, POST');
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.iutwb2x.mongodb.net/?retryWrites=true&w=majority`;
@@ -49,7 +56,7 @@ async function run() {
 		})
 
 		app.get("/allToys", async (req, res) => {
-			const result = await toysCollection.find({}).limit(20).sort({price:1}).toArray();
+			const result = await toysCollection.find({}).limit(20).sort({ price: 1 }).toArray();
 			res.send(result);
 
 		})
@@ -91,7 +98,7 @@ async function run() {
 
 	} finally {
 		// Ensures that the client will close when you finish/error
-		await client.close();
+		// await client.close();
 	}
 }
 run().catch(console.dir);
