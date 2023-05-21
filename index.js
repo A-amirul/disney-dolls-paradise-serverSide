@@ -49,11 +49,7 @@ async function run() {
 		})
 
 		app.get("/allToys", async (req, res) => {
-			const ascending = req.query.ascending === 'true';
-			const sortCriteria = ascending ? { price: 1 } : { price: -1 };
-
-			const result = await toysCollection.find({}).limit(20).sort(sortCriteria).toArray();
-			res.json(sortedDocuments);
+			const result = await toysCollection.find({}).limit(20).sort({price:1}).toArray();
 			res.send(result);
 
 		})
