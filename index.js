@@ -42,7 +42,11 @@ async function run() {
 
 		app.get("/allToys", async (req, res) => {
 
-			const result = await toysCollection.find({}).limit(20).toArray();
+			const type = req.query.type === "ascending";
+			const value = req.query.value;
+			const sortObj = {};
+			sortObj[value] = type ? 1 : -1;
+			const result = await toysCollection.find({}).limit(20).sort(sortObj).toArray();
 			res.send(result);
 
 		})
@@ -99,3 +103,5 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
 	console.log(`Disney Dolls is running on port ${port}`);
 })
+
+module.exports = app;
