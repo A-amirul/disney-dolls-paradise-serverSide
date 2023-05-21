@@ -49,12 +49,11 @@ async function run() {
 		})
 
 		app.get("/allToys", async (req, res) => {
+			const ascending = req.query.ascending === 'true';
+			const sortCriteria = ascending ? { price: 1 } : { price: -1 };
 
-			const type = req.query.type === "ascending";
-			const value = req.query.value;
-			const sortObj = {};
-			sortObj[value] = type ? 1 : -1;
-			const result = await toysCollection.find({}).limit(20).sort(sortObj).toArray();
+			const result = await toysCollection.find({}).limit(20).sort(sortCriteria).toArray();
+			res.json(sortedDocuments);
 			res.send(result);
 
 		})
@@ -96,7 +95,7 @@ async function run() {
 
 	} finally {
 		// Ensures that the client will close when you finish/error
-		// await client.close();
+		await client.close();
 	}
 }
 run().catch(console.dir);
